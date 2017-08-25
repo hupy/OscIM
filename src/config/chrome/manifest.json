@@ -1,0 +1,26 @@
+{
+  "name": "$NAME",
+  "version": "$VERSION",
+  "manifest_version": 2,
+  "author": "vitas",
+  "description": "$DESCRIPTION",
+  "homepage_url": "$HOMEPAGE",
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "http://www.oschina.net/*",
+    "https://www.oschina.net/*",
+    "storage",
+    "tabs"
+  ],
+  "optional_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  }
+}

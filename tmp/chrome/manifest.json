@@ -1,0 +1,26 @@
+{
+  "name": "OscIM",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "author": "vitas",
+  "description": "开源中国IM 基于layim",
+  "homepage_url": "https://git.oschina.net/1763692101/GitCodeTree",
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "http://www.oschina.net/*",
+    "https://www.oschina.net/*",
+    "storage",
+    "tabs"
+  ],
+  "optional_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  }
+}
