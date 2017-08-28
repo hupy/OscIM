@@ -72,7 +72,7 @@ gulp.task('chrome:js', () => {
     return buildJs(['./src/config/chrome/overrides.js'], {CHROME: true})
 })
 
-gulp.task('chrome',['chrome:js'], () => {
+gulp.task('chrome',['styles','chrome:js'], () => {
     return merge(
         pipe('./icons/**/*', './tmp/chrome/icons'),
         pipe(['./tmp/*.css'], './tmp/chrome/css'),

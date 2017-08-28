@@ -16,8 +16,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     const jsFiles = [
       'js/jquery.js',
+      'js/layui.all.js',
       'js/common.js',
-      'js/layui.all.js'
     ]
 
     eachTask([
@@ -58,10 +58,10 @@ chrome.runtime.onMessage.addListener((req, sender, sendRes) => {
 
       function removeUnnecessaryPermissions() {
         const whitelist = urls.concat([
-          'http://www.oschina.net/*',
           'https://www.oschina.net/*',
-          'http://oschina.net/*',
-          'https://oschina.net/*',
+          'https://my.oschina.net/*',
+          'http://www.oschina.net/*',
+          'http://my.oschina.net/*',
         ])
         chrome.permissions.getAll((permissions) => {
           const toBeRemovedUrls = permissions.origins.filter((url) => {

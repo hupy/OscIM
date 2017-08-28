@@ -224,7 +224,13 @@ layui.define(['layer', 'laytpl', 'upload'], function(exports){
   //聊天主模板
   var elemChatTpl = ['<div class="layim-chat layim-chat-{{d.data.type}}">'
     ,'<div class="layim-chat-title">'
-      ,'<a class="layim-chat-other">'
+      ,'{{# if(d.data.gender == 2){ }}'
+      ,'<span class="user-gender female"><i class="icon-svg icon-female-white"></i></span>'
+      ,'{{# }; }}'
+      ,'{{# if(d.data.gender == 1){ }}'
+      ,'<span class="user-gender male"><i class="icon-svg icon-male-white"></i></span>'
+      ,'{{# }; }}'
+      ,'<a class="layim-chat-other" href="{{ d.base.blog_url }}{{ d.data.id }}">'
         ,'<img src="{{ d.data.avatar }}"><span layim-event="{{ d.data.type==="group" ? \"groupMembers\" : \"\" }}">{{ d.data.name||"佚名" }} {{d.data.temporary ? "<cite>临时会话</cite>" : ""}} {{# if(d.data.type==="group"){ }} <em class="layim-chat-members"></em><i class="layui-icon">&#xe61a;</i> {{# } }}</span>'
       ,'</a>'
     ,'</div>'
@@ -281,7 +287,7 @@ layui.define(['layer', 'laytpl', 'upload'], function(exports){
     };
     content = (content||'').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
     .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;') //XSS
-    .replace(/@(\S+)(\s+?|$)/g, '@<a href="javascript:;">$1</a>$2') //转义@
+    //.replace(/@(\S+)(\s+?|$)/g, '@<a href="javascript:;">$1</a>$2') //转义@
     .replace(/\s{2}/g, '&nbsp') //转义空格
     .replace(/img\[([^\s]+?)\]/g, function(img){  //转义图片
       return '<img class="layui-layim-photos" src="' + img.replace(/(^img\[)|(\]$)/g, '') + '">';
@@ -295,13 +301,18 @@ layui.define(['layer', 'laytpl', 'upload'], function(exports){
     .replace(/face\[([^\s\[\]]+?)\]/g, function(face){  //转义表情
       var alt = face.replace(/^face/g, '');
       return '<img alt="'+ alt +'" title="'+ alt +'" src="' + faces[alt] + '">';
+    }).replace(/\[\d+\]+?/g, function(face){  //转义表情
+      //oschina 表情支持
+      var alt = face.match(/\d+/)[0];
+      return '<img alt="'+ face +'" title="'+ face +'" src="' + faces_index[alt] + '">';
     }).replace(/a\([\s\S]+?\)\[[\s\S]*?\]/g, function(str){ //转义链接
-      var href = (str.match(/a\(([\s\S]+?)\)\[/)||[])[1];
-      var text = (str.match(/\)\[([\s\S]*?)\]/)||[])[1];
-      if(!href) return str;
-      return '<a href="'+ href +'" target="_blank">'+ (text||href) +'</a>';
-    }).replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') //转移代码
-    .replace(/\n/g, '<br>') //转义换行 
+       var href = (str.match(/a\(([\s\S]+?)\)\[/)||[])[1];
+       var text = (str.match(/\)\[([\s\S]*?)\]/)||[])[1];
+       if(!href) return str;
+       return '<a href="'+ href +'" target="_blank">'+ (text||href) +'</a>';
+     }).replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') //转移代码
+    .replace(/\n/g, '<br>') //转义换行
+    .replace(/\&lt\;a.*?href=\&quot\;(.*?)\&quot\;\&gt\;(.*?)\&lt\;\/a\&gt\;/g, '\<a href="$1" target="_blank"\>$2\<\/a\>')
     return content;
   };
   
@@ -1063,6 +1074,16 @@ layui.define(['layer', 'laytpl', 'upload'], function(exports){
       arr[item] = chrome.extension.getURL('images/face/'+ index + '.gif');
     });
     return arr;
+  }();
+  
+  //根据数字匹配表情
+  var faces_index = function(){
+      var alt = ["[微笑]", "[嘻嘻]", "[哈哈]", "[可爱]", "[可怜]", "[挖鼻]", "[吃惊]", "[害羞]", "[挤眼]", "[闭嘴]", "[鄙视]", "[爱你]", "[泪]", "[偷笑]", "[亲亲]", "[生病]", "[太开心]", "[白眼]", "[右哼哼]", "[左哼哼]", "[嘘]", "[衰]", "[委屈]", "[吐]", "[哈欠]", "[抱抱]", "[怒]", "[疑问]", "[馋嘴]", "[拜拜]", "[思考]", "[汗]", "[困]", "[睡]", "[钱]", "[失望]", "[酷]", "[色]", "[哼]", "[鼓掌]", "[晕]", "[悲伤]", "[抓狂]", "[黑线]", "[阴险]", "[怒骂]", "[互粉]", "[心]", "[伤心]", "[猪头]", "[熊猫]", "[兔子]", "[ok]", "[耶]", "[good]", "[NO]", "[赞]", "[来]", "[弱]", "[草泥马]", "[神马]", "[囧]", "[浮云]", "[给力]", "[围观]", "[威武]", "[奥特曼]", "[礼物]", "[钟]", "[话筒]", "[蜡烛]", "[蛋糕]"], arr = {};
+      layui.each(alt, function(index, item){
+          //arr[item] = layui.cache.dir + 'images/face/'+ index + '.gif';
+          arr[index] = chrome.extension.getURL('images/face/'+ index + '.gif');
+      });
+      return arr;
   }();
   
   

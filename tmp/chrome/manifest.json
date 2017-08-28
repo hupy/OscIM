@@ -11,6 +11,8 @@
   "permissions": [
     "http://www.oschina.net/*",
     "https://www.oschina.net/*",
+    "http://my.oschina.net/*",
+    "https://my.oschina.net/*",
     "storage",
     "tabs"
   ],

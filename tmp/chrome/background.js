@@ -13,7 +13,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
     var cssFiles = ['css/layui.all.css', 'css/common.css'];
 
-    var jsFiles = ['js/jquery.js', 'js/common.js', 'js/layui.all.js'];
+    var jsFiles = ['js/jquery.js', 'js/layui.all.js', 'js/common.js'];
 
     eachTask([function (cb) {
       return eachItem(cssFiles, inject('insertCSS'), cb);
@@ -52,7 +52,7 @@ chrome.runtime.onMessage.addListener(function (req, sender, sendRes) {
       return true;
 
       function removeUnnecessaryPermissions() {
-        var whitelist = urls.concat(['http://www.oschina.net/*', 'https://www.oschina.net/*', 'http://oschina.net/*', 'https://oschina.net/*']);
+        var whitelist = urls.concat(['https://www.oschina.net/*', 'https://my.oschina.net/*', 'http://www.oschina.net/*', 'http://my.oschina.net/*']);
         chrome.permissions.getAll(function (permissions) {
           var toBeRemovedUrls = permissions.origins.filter(function (url) {
             return !~whitelist.indexOf(url);
