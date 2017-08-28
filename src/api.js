@@ -1,12 +1,14 @@
 const user = "https://www.oschina.net/action/apiv2/user_info"
+//https://www.oschina.net/action/apiv2/friends_list?uid=
 const friend = "https://www.oschina.net/action/apiv2/user_follows"
 const fans = "https://www.oschina.net/action/apiv2/user_fans"
 const send_messages = "https://www.oschina.net/action/apiv2/messages_pub"
 const get_messages = "https://www.oschina.net/action/apiv2/messages"
+const letters = "https://www.oschina.net/action/apiv2/user_msg_letters"
 
 const __api = {
-    getUser : function (callback) {
-        this.request({url:user}, callback)
+    getUser : function (data, callback) {
+        this.request({url:user,data:data}, callback)
     },
     getFriend : function (data,callback) {
         this.request({url:friend,data:data}, callback)
@@ -19,6 +21,9 @@ const __api = {
     },
     sendMessage : function (data,callback) {
         this.request({url:send_messages,data:data},callback)
+    },
+    getLetters : function (data,callback) {
+        this.request({url:letters,data:data},callback)
     },
     request : function (options, callback) {
         $.ajax({

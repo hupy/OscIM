@@ -8,7 +8,7 @@ $(document).ready(() => {
         const $document = $(document)
         data.mine = {}
         //获取当前登录者信息
-        __api.getUser(function (result) {
+        __api.getUser({id:''},function (result) {
             data.mine.id = result.id
             data.mine.username = result.name
             data.mine.avatar = result.portrait
@@ -112,6 +112,25 @@ $(document).ready(() => {
                     gender: item.gender,
                 })
             })
+        })
+    }
+    
+    function checkMessage(){
+        $.get("https://www.oschina.net/action/newMsg/list?t=1&p=1",function (html) {
+            $dom = $(html);
+            $dom.find(".message-panel").find(".unread-message").each(function () {
+                var $item = $(this).parent().parent().parent().parent().parent()
+                var id = $item.attr('onclick').replace("page.msgLive(","").replace(")","")
+                var message = {}
+                __api.getUser({id:id},function (result) {
+                    message.type = "friend"
+                    message.id = result.id
+                    message.username = result.name
+                    message.avatar = result.portrait
+                    message.mine = false
+                    message.timestamp = new Date().getTime()
+                })
+            });
         })
     }
 })
