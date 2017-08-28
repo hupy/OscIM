@@ -68,11 +68,7 @@ gulp.task('layimcss', () => {
 })
 
 // Chrome
-gulp.task('chrome:template', () => {
-    return buildTemplate({CHROME: true})
-})
-
-gulp.task('chrome:js', ['chrome:template'], () => {
+gulp.task('chrome:js', () => {
     return buildJs(['./src/config/chrome/overrides.js'], {CHROME: true})
 })
 
@@ -81,6 +77,7 @@ gulp.task('chrome',['chrome:js'], () => {
         pipe('./icons/**/*', './tmp/chrome/icons'),
         pipe(['./tmp/*.css'], './tmp/chrome/css'),
         pipe('./src/layim/font/**/*', './tmp/chrome/font'),
+        pipe(['./src/layim/images/**/*','./src/layim/css/modules/layim/**/*','./src/layim/css/modules/layer/**/*.{png,gif}'], './tmp/chrome/images'),
         pipe(['./tmp/*.js','./libs/*.js'], './tmp/chrome/js'),
         pipe('./src/config/chrome/background.js', $.babel(), './tmp/chrome/'),
         pipe('./src/config/chrome/manifest.json',
@@ -135,7 +132,7 @@ function html2js(template) {
 
 function buildJs(overrides, ctx) {
   const src = [
-    './tmp/template.js',
+    './src/api.js',
     './src/common.js',
     './src/util.storage.js',
   ].concat(overrides)
@@ -145,18 +142,6 @@ function buildJs(overrides, ctx) {
     $.babel(),
     $.concat('common.js'),
     $.preprocess({context: ctx}),
-    './tmp'
-  )
-}
-
-function buildTemplate(ctx) {
-  const LOTS_OF_SPACES = new Array(500).join(' ')
-
-  return pipe(
-    './src/template.html',
-    $.preprocess({context: ctx}),
-    $.replace('__SPACES__', LOTS_OF_SPACES),
-    html2js('const TEMPLATE = \'$$\''),
     './tmp'
   )
 }
