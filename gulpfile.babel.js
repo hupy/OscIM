@@ -94,9 +94,8 @@ gulp.task('chrome:zip', () => {
 })
 
 gulp.task('chrome:_crx', (cb) => {
-    $.run('"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"' +
-        ' --pack-extension=' + path.join(__dirname, './tmp/chrome') +
-        ' --pack-extension-key=' + path.join(process.env.HOME, '.ssh/chrome.pem')
+    $.run('C:\\Progra~1\\Google\\Chrome\\Application\\chrome.exe' +
+        ' --pack-extension=' + path.join(__dirname, './tmp/chrome')
     ).exec(cb)
 })
 
