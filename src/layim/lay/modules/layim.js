@@ -818,7 +818,7 @@ layui.define(['layer', 'laytpl', 'upload'], function(exports){
     var group = {}, index = elem.index();
     
     data.timestamp = data.timestamp || new Date().getTime();
-    pushChatlog(data);
+    data.content ? pushChatlog(data) : false;
     
     if((!layimChat && data.content) || index === -1){
       if(cache.message[data.type + data.id]){

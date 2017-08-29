@@ -185,6 +185,7 @@ Lay.fn.getStyle = function(node, name){
 
 //css外部加载器
 Lay.fn.link = function(href, fn, cssname){
+  return;
   var that = this, link = doc.createElement('link');
   var head = doc.getElementsByTagName('head')[0];
   if(typeof fn === 'string') cssname = fn;

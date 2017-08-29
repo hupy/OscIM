@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    const store = new Storage()
+    //const store = new Storage()
     const data = {}
     
     loadExtension()
@@ -70,12 +70,31 @@ $(document).ready(() => {
                     })
                     //layui.layim.viewChatlog()
                 })
+            }else{
+                //拉取最新的聊天信息
+                __api.getMessage({authorId:record.data.id},function (result) {
+                    layui.each(result.items,function (index, item) {
+                        //验证最后聊天记录
+                        var logs = local["friend" + record.data.id];
+                        var last = logs[logs.length - 1];
+                        if(last.timestamp < new Date(item.pubDate).getTime()){
+                            layui.layim.pushChatlog({
+                                username: item.sender.name,
+                                avatar: item.sender.portrait,
+                                id: record.data.id,
+                                type: "friend",
+                                content: item.content || (item.resource ? "img["+ item.resource +"]" : ""),
+                                mine: data.mine.id == item.sender.id,
+                                fromid: item.sender.id,
+                                timestamp: new Date(item.pubDate).getTime()
+                            });
+                        }
+                    })
+                })
             }
         });
         //监听消息
-        layui.layim.on('ready', function(res){
-        
-        })
+        var heart = setInterval(checkMessage, 3000)
     }
     
     //循环获取好友--接口没有获取全部参数只能循环获取咯
@@ -116,21 +135,26 @@ $(document).ready(() => {
     }
     
     function checkMessage(){
-        $.get("https://www.oschina.net/action/newMsg/list?t=1&p=1",function (html) {
-            $dom = $(html);
-            $dom.find(".message-panel").find(".unread-message").each(function () {
-                var $item = $(this).parent().parent().parent().parent().parent()
-                var id = $item.attr('onclick').replace("page.msgLive(","").replace(")","")
-                var message = {}
-                __api.getUser({id:id},function (result) {
-                    message.type = "friend"
-                    message.id = result.id
-                    message.username = result.name
-                    message.avatar = result.portrait
-                    message.mine = false
-                    message.timestamp = new Date().getTime()
+        __api.getNotice({clear:false},function (data) {
+            if(data.letter > 0){
+                //匹配新消息
+                $.get("https://"+ location.host +"/action/newMsg/list?t=1&p=1",function (html) {
+                    var $dom = $(html);
+                    $dom.find(".message-panel").find(".unread-message").each(function () {
+                        var $item = $(this).parent().parent().parent().parent().parent()
+                        var id = $item.attr('onclick').replace("page.msgLive(","").replace(")","")
+                        var message = {}
+                        __api.getUser({id:id},function (result) {
+                            message.type = "friend"
+                            message.id = result.id
+                            message.username = result.name
+                            message.avatar = result.portrait
+                            message.mine = false
+                            layui.layim.getMessage(message)
+                        })
+                    });
                 })
-            });
+            }
         })
     }
 })

@@ -5,6 +5,7 @@ const fans = "https://www.oschina.net/action/apiv2/user_fans"
 const send_messages = "https://www.oschina.net/action/apiv2/messages_pub"
 const get_messages = "https://www.oschina.net/action/apiv2/messages"
 const letters = "https://www.oschina.net/action/apiv2/user_msg_letters"
+const notice = "https://www.oschina.net/action/apiv2/notice"
 
 const __api = {
     getUser : function (data, callback) {
@@ -24,6 +25,9 @@ const __api = {
     },
     getLetters : function (data,callback) {
         this.request({url:letters,data:data},callback)
+    },
+    getNotice : function (data, callback) {
+        this.request({url:notice,async:true,data:data},callback)
     },
     request : function (options, callback) {
         $.ajax({
