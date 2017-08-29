@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.oschina.net/1763692101/GitCodeTree"
+    "url": "https://gitee.com/1763692101/OscIM"
   },
   "author": "vitas",
   "license": "AGPL",
   "bugs": {
-    "url": "https://git.oschina.net/1763692101/GitCodeTree/issues"
+    "url": "https://gitee.com/1763692101/OscIM/issues"
   },
-  "homepage": "https://git.oschina.net/1763692101/GitCodeTree",
+  "homepage": "https://gitee.com/1763692101/OscIM",
   "devDependencies": {
     "async": "~0.9.0",
     "babel-core": "^6.1.2",
